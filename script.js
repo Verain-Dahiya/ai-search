@@ -40,29 +40,39 @@ function voiceSearch(){
 
   speech.start();
 }
+}
+async function openAI() {
 
-async function openAI(){
+  let q = document.getElementById("searchInput").value;
 
-  let q=document.getElementById("searchInput").value;
+  let chat = document.getElementById("chatBox");
 
-  let chat=document.getElementById("chatBox");
+  if(q.trim() === ""){
+    chat.innerHTML = "Type something first";
+    return;
+  }
 
-  chat.innerHTML="Thinking...";
+  chat.innerHTML = "Thinking...";
 
-  try{
+  try {
 
-    let res=await fetch(
-    "https://api.affiliateplus.xyz/api/chatbot?message="+q+"&owner=You&botname=AI"
+    let response = await fetch(
+      "https://api.affiliateplus.xyz/api/chatbot?message="
+      + encodeURIComponent(q)
+      + "&botname=AI&owner=You"
     );
 
-    let data=await res.json();
+    let data = await response.json();
 
-    chat.innerHTML=
-    "<h3>AI:</h3>"+data.message;
+    chat.innerHTML =
+      "<div style='padding:20px;border-radius:20px;background:#222;color:white;'>"
+      + data.message +
+      "</div>";
 
-  }catch(e){
+  } catch(err) {
 
-    chat.innerHTML="Error loading AI";
+    chat.innerHTML =
+      "<div style='color:red;'>AI server error or internet issue</div>";
+
   }
 }
-
