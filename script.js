@@ -1,63 +1,62 @@
 function doSearch() {
 
-  let q =
-  document.getElementById("searchInput").value;
+  const input =
+  document.getElementById("searchInput");
 
-  if(q.trim() === "") {
-    alert("Type something");
+  const q = input.value.trim();
+
+  if(q === "") {
+    alert("Enter something");
     return;
   }
 
-  let url =
+  const url =
   "https://www.google.com/search?q=" +
   encodeURIComponent(q);
 
-  window.open(url, "_blank");
+  window.location.href = url;
 }
 
-function imageSearch(){
+function imageSearch() {
 
-  let q =
-  document.getElementById("searchInput").value;
+  const q =
+  document.getElementById("searchInput")
+  .value.trim();
 
-  if(q.trim() !== ""){
-
-    window.open(
-      "https://www.google.com/search?tbm=isch&q="
-      + encodeURIComponent(q),
-      "_blank"
-    );
-
+  if(q === "") {
+    alert("Enter something");
+    return;
   }
+
+  window.location.href =
+  "https://www.google.com/search?tbm=isch&q=" +
+  encodeURIComponent(q);
 }
 
-function toggleDark(){
+function toggleDark() {
 
   document.body.classList.toggle("dark");
-
 }
 
-function login(){
+function login() {
 
-  let user =
-  prompt("Enter Username");
+  let user = prompt("Username");
 
-  if(user){
+  if(user) {
 
-    localStorage.setItem("username", user);
+    localStorage.setItem("user", user);
 
     alert("Welcome " + user);
-
   }
 }
 
-function voiceSearch(){
+function voiceSearch() {
 
-  try{
+  try {
 
     const SpeechRecognition =
-    window.SpeechRecognition
-    || window.webkitSpeechRecognition;
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
     const recognition =
     new SpeechRecognition();
@@ -67,70 +66,75 @@ function voiceSearch(){
     recognition.start();
 
     recognition.onresult =
-    function(event){
+    function(event) {
 
       document.getElementById(
       "searchInput").value =
       event.results[0][0].transcript;
-
     };
 
-  }catch(e){
+  } catch(e) {
 
     alert(
-    "Voice search not supported in your browser");
-
+    "Voice search unsupported");
   }
 }
 
-async function openAI(){
+async function openAI() {
 
-  let q =
-  document.getElementById("searchInput").value;
+  const q =
+  document.getElementById(
+  "searchInput").value.trim();
 
-  let chat =
-  document.getElementById("chatBox");
+  const chat =
+  document.getElementById(
+  "chatBox");
 
-  if(q.trim() === ""){
+  if(q === "") {
 
     chat.innerHTML =
-    "Type something first";
+    "Type something";
 
     return;
   }
 
-  chat.innerHTML = "Thinking...";
+  chat.innerHTML =
+  "Thinking...";
 
   const API_KEY =
- AIzaSyBdrO_3W_2W5YFvNrKMrsFGlIT7CjdYO_g "PASTE_YOUR_REAL_API_KEY";
+  "AIzaSyBdrO_3W_2W5YFvNrKMrsFGlIT7CjdYO_g";
 
-  try{
+  try {
 
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
-      + API_KEY,
-      {
+    const response =
+    await fetch(
 
-        method:"POST",
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+    + API_KEY,
 
-        body:JSON.stringify({
+    {
 
-          contents:[{
+      method:"POST",
 
-            parts:[{
-              text:q
-            }]
+      headers:{
+        "Content-Type":
+        "application/json"
+      },
 
+      body:JSON.stringify({
+
+        contents:[{
+
+          parts:[{
+            text:q
           }]
 
-        })
+        }]
 
-      }
-    );
+      })
+
+    });
 
     const data =
     await response.json();
@@ -139,7 +143,7 @@ async function openAI(){
 
     if(data.candidates){
 
-      let reply =
+      const reply =
       data.candidates[0]
       .content.parts[0].text;
 
@@ -157,19 +161,17 @@ async function openAI(){
       </div>
       `;
 
-    }else{
+    } else {
 
       chat.innerHTML =
-      "Invalid API response";
-
+      "API Error";
     }
 
-  }catch(error){
+  } catch(err) {
 
-    console.log(error);
+    console.log(err);
 
     chat.innerHTML =
-    "API Error or Internet Issue";
-
+    "Connection Error";
   }
 }
