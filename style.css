@@ -1,0 +1,68 @@
+body{
+  margin:0;
+  font-family:Arial;
+  background:white;
+  color:black;
+  transition:0.3s;
+  text-align:center;
+}
+
+.dark{
+  background:#111;
+  color:white;
+}
+
+.topbar{
+  position:absolute;
+  top:10px;
+  right:10px;
+}
+
+.logo{
+  margin-top:120px;
+  font-size:70px;
+  animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+  from{
+    text-shadow:0 0 10px #4285F4;
+  }
+  to{
+    text-shadow:0 0 25px #EA4335;
+  }
+}
+
+.search-box{
+  margin-top:30px;
+}
+
+input{
+  width:60%;
+  padding:15px;
+  border-radius:30px;
+  border:1px solid #ccc;
+  font-size:18px;
+  outline:none;
+  transition:0.3s;
+}
+
+input:focus{
+  transform:scale(1.03);
+  box-shadow:0 0 20px #4285F4;
+}
+
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:30px;
+  margin:5px;
+  cursor:pointer;
+}
+
+#chatBox{
+  width:80%;
+  margin:auto;
+  margin-top:30px;
+  padding:20px;
+}

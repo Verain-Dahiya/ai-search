@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Search</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+  <button onclick="toggleDark()">🌙</button>
+  <button onclick="login()">Login</button>
+</div>
+
+<h1 class="logo">AI Search</h1>
+
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Search anything...">
+  
+  <button onclick="voiceSearch()">🎤</button>
+  
+  <button onclick="doSearch()">🔍</button>
+</div>
+
+<div class="buttons">
+  <button onclick="imageSearch()">Image Search</button>
+  <button onclick="openAI()">AI Chat</button>
+</div>
+
+<div id="chatBox"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
