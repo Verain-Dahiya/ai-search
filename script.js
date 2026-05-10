@@ -1,47 +1,88 @@
 function doSearch(){
-  let q=document.getElementById("searchInput").value;
 
-  window.location.href=
-  "https://www.google.com/search?q="+encodeURIComponent(q);
+  let q =
+  document.getElementById("searchInput").value;
+
+  if(q.trim() !== ""){
+
+    window.open(
+      "https://www.google.com/search?q="
+      + encodeURIComponent(q),
+      "_blank"
+    );
+
+  }
 }
 
 function imageSearch(){
-  let q=document.getElementById("searchInput").value;
 
-  window.location.href=
-  "https://www.google.com/images?q="+encodeURIComponent(q);
+  let q =
+  document.getElementById("searchInput").value;
+
+  if(q.trim() !== ""){
+
+    window.open(
+      "https://www.google.com/search?tbm=isch&q="
+      + encodeURIComponent(q),
+      "_blank"
+    );
+
+  }
 }
 
 function toggleDark(){
+
   document.body.classList.toggle("dark");
+
 }
 
 function login(){
-  let user=prompt("Enter Username");
+
+  let user =
+  prompt("Enter Username");
 
   if(user){
-    alert("Welcome "+user);
-    localStorage.setItem("user",user);
+
+    localStorage.setItem("username", user);
+
+    alert("Welcome " + user);
+
   }
 }
 
 function voiceSearch(){
 
-  let speech=
-  new webkitSpeechRecognition();
+  try{
 
-  speech.lang="en-US";
+    const SpeechRecognition =
+    window.SpeechRecognition
+    || window.webkitSpeechRecognition;
 
-  speech.onresult=function(event){
+    const recognition =
+    new SpeechRecognition();
 
-    document.getElementById("searchInput").value=
-    event.results[0][0].transcript;
-  };
+    recognition.lang = "en-US";
 
-  speech.start();
+    recognition.start();
+
+    recognition.onresult =
+    function(event){
+
+      document.getElementById(
+      "searchInput").value =
+      event.results[0][0].transcript;
+
+    };
+
+  }catch(e){
+
+    alert(
+    "Voice search not supported in your browser");
+
+  }
 }
-}
-async function openAI() {
+
+async function openAI(){
 
   let q =
   document.getElementById("searchInput").value;
@@ -50,60 +91,84 @@ async function openAI() {
   document.getElementById("chatBox");
 
   if(q.trim() === ""){
-    chat.innerHTML = "Type something";
+
+    chat.innerHTML =
+    "Type something first";
+
     return;
   }
 
   chat.innerHTML = "Thinking...";
 
-  const API_KEY = "AIzaSyBdrO_3W_2W5YFvNrKMrsFGlIT7CjdYO_g";
+  const API_KEY =
+ AIzaSyBdrO_3W_2W5YFvNrKMrsFGlIT7CjdYO_g "PASTE_YOUR_REAL_API_KEY";
 
-  try {
+  try{
 
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + API_KEY,
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
+      + API_KEY,
       {
-        method: "POST",
 
-        headers: {
-          "Content-Type": "application/json"
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
         },
 
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: q
+        body:JSON.stringify({
+
+          contents:[{
+
+            parts:[{
+              text:q
             }]
+
           }]
+
         })
+
       }
     );
 
-    const data = await response.json();
+    const data =
+    await response.json();
 
-    let reply =
-    data.candidates[0].content.parts[0].text;
+    console.log(data);
 
-    chat.innerHTML =
-    `
-    <div style="
+    if(data.candidates){
+
+      let reply =
+      data.candidates[0]
+      .content.parts[0].text;
+
+      chat.innerHTML =
+      `
+      <div style="
       background:#222;
       color:white;
       padding:20px;
       border-radius:20px;
       margin-top:20px;
       text-align:left;
-    ">
+      ">
       ${reply}
-    </div>
-    `;
+      </div>
+      `;
 
-  } catch(error) {
+    }else{
 
-    chat.innerHTML =
-    "<span style='color:red'>API Error</span>";
+      chat.innerHTML =
+      "Invalid API response";
+
+    }
+
+  }catch(error){
 
     console.log(error);
+
+    chat.innerHTML =
+    "API Error or Internet Issue";
 
   }
 }
