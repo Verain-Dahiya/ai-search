@@ -1,17 +1,18 @@
-function doSearch(){
+function doSearch() {
 
   let q =
   document.getElementById("searchInput").value;
 
-  if(q.trim() !== ""){
-
-    window.open(
-      "https://www.google.com/search?q="
-      + encodeURIComponent(q),
-      "_blank"
-    );
-
+  if(q.trim() === "") {
+    alert("Type something");
+    return;
   }
+
+  let url =
+  "https://www.google.com/search?q=" +
+  encodeURIComponent(q);
+
+  window.open(url, "_blank");
 }
 
 function imageSearch(){
