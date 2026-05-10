@@ -43,36 +43,67 @@ function voiceSearch(){
 }
 async function openAI() {
 
-  let q = document.getElementById("searchInput").value;
+  let q =
+  document.getElementById("searchInput").value;
 
-  let chat = document.getElementById("chatBox");
+  let chat =
+  document.getElementById("chatBox");
 
   if(q.trim() === ""){
-    chat.innerHTML = "Type something first";
+    chat.innerHTML = "Type something";
     return;
   }
 
   chat.innerHTML = "Thinking...";
 
+  const API_KEY = "AIzaSyBdrO_3W_2W5YFvNrKMrsFGlIT7CjdYO_g";
+
   try {
 
-    let response = await fetch(
-      "https://api.affiliateplus.xyz/api/chatbot?message="
-      + encodeURIComponent(q)
-      + "&botname=AI&owner=You"
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + API_KEY,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: q
+            }]
+          }]
+        })
+      }
     );
 
-    let data = await response.json();
+    const data = await response.json();
+
+    let reply =
+    data.candidates[0].content.parts[0].text;
 
     chat.innerHTML =
-      "<div style='padding:20px;border-radius:20px;background:#222;color:white;'>"
-      + data.message +
-      "</div>";
+    `
+    <div style="
+      background:#222;
+      color:white;
+      padding:20px;
+      border-radius:20px;
+      margin-top:20px;
+      text-align:left;
+    ">
+      ${reply}
+    </div>
+    `;
 
-  } catch(err) {
+  } catch(error) {
 
     chat.innerHTML =
-      "<div style='color:red;'>AI server error or internet issue</div>";
+    "<span style='color:red'>API Error</span>";
+
+    console.log(error);
 
   }
 }
